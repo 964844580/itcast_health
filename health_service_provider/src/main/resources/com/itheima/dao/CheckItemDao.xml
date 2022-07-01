@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.dao.CheckItemDao">
+    <!-- public void add(CheckItem checkItem);-->
+    <insert id="add">
+        insert into t_checkitem values(null,#{code},#{name},#{sex},#{age},#{price},#{type},#{remark},#{attention})
+    </insert>
+     <!--  public List<CheckItem> selectByCondition(@Param("queryString") String queryString,@Param("currentPage") Integer currentPage,@Param("pageSize") Integer pageSize);-->
+    <select id="selectByCondition" resultType="com.itheima.pojo.CheckItem">
+        select * from t_checkitem
+        <where>
+            <if test="queryString!=null and queryString!=''">
+                code=#{queryString} or name=#{queryString}
+            </if>
+        </where>
+          limit #{startRecord},#{pageSize}
+    </select>
+    <!--  public Integer getTotalCount();-->
+    <select id="getTotalCount" resultType="Long">
+        select count(*) from t_checkitem
+    </select>
+    <!--public void deleteById(Integer id);-->
+    <delete id="deleteById">
+        delete from t_checkitem where id=#{id}
+    </delete>
+    <!-- public long findCheckItemCountFromCheckGroupById(Integer id);-->
+    <select id="findCheckItemCountFromCheckGroupById" resultType="Long">
+        select count(*) from t_checkgroup_checkitem where checkitem_id=#{id}
+    </select>
+    <!--public void edit(CheckItem checkItem);-->
+    <update id="edit">
+        update t_checkitem
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="type != null">
+                type = #{type}
+            </if>
+            <if test="attention != null">
+                attention = #{attention},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <!--  public CheckItem findById(Integer id);-->
+    <select id="findById" resultType="com.itheima.pojo.CheckItem">
+        select * from t_checkitem where id=#{id}
+    </select>
+    <!--   public List<CheckItem> findAll();-->
+    <select id="findAll" resultType="com.itheima.pojo.CheckItem">
+        select * from t_checkitem
+    </select>
+    <!-- public List<CheckItem> findByCheckGroupId(@Param("checkGroupId") Integer checkGroupId);-->
+    <select id="findByCheckGroupId" resultType="com.itheima.pojo.CheckItem">
+        select * from t_checkitem where id in(select checkitem_id from t_checkgroup_checkitem where checkgroup_id=#{checkGroupId})
+    </select>
+</mapper>

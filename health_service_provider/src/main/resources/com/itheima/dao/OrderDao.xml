@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.dao.OrderDao">
+    <resultMap id="baseResultMap" type="com.itheima.pojo.Order">
+        <id column="id" property="id"/>
+        <result column="member_id" property="memberId"/>
+        <result column="orderDate" property="orderDate"/>
+        <result column="orderType" property="orderType"/>
+        <result column="orderStatus" property="orderStatus"/>
+        <result column="setmeal_id" property="setmealId"/>
+    </resultMap>
+    <!-- public List<Order> selectByCondition(Order order);-->
+    <select id="selectByCondition" resultMap="baseResultMap">
+        select * from t_order
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="memberId != null">
+                and member_id = #{memberId}
+            </if>
+            <if test="orderDate != null">
+                and orderDate = #{orderDate}
+            </if>
+            <if test="orderType != null">
+                and orderType = #{orderType}
+            </if>
+            <if test="orderStatus != null">
+                and orderStatus = #{orderStatus}
+            </if>
+            <if test="setmealId != null">
+                and setmeal_id = #{setmealId}
+            </if>
+        </where>
+    </select>
+    <!--public void add(Order order);-->
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into t_order values (null,#{memberId},#{orderDate},#{orderType},#{orderStatus},#{setmealId})
+    </insert>
+    <!--public Map findById4Detail(Integer id);-->
+    <select id="findById4Detail" parameterType="int" resultType="map">
+         SELECT m.`name` AS member, s.`name` AS setmeal, o.`orderDate` AS orderDate, o.`orderType` AS orderType
+
+  FROM t_order o INNER JOIN t_member m ON o.`member_id`=m.`id` INNER JOIN t_setmeal s ON o.`setmeal_id`=s.`id` WHERE o.`id`=#{id}
+    </select>
+    <!--public Integer getOrderCountByDate(@Param("date") String date);-->
+    <select id="getOrderCountByDate" resultType="Integer">
+        select count(*) from t_order where orderDate=#{date}
+    </select>
+    <!--public Integer getOrderCountAfterDate(@Param("date") String date);-->
+    <select id="getOrderCountAfterDate" resultType="Integer">
+        select count(*) from t_order where orderDate &gt;=#{date}
+    </select>
+    <!--public Integer getVisitsCountByDate(@Param("date") String date);-->
+    <select id="getVisitsCountByDate" resultType="Integer">
+        SELECT COUNT(*) FROM t_order WHERE orderDate=#{date} AND orderStatus='已到诊'
+    </select>
+    <!-- public Integer getVisitsCountAfterDate(@Param("date") String date);-->
+    <select id="getVisitsCountAfterDate" resultType="Integer">
+        select count(*) from t_order where orderDate &gt;=#{date} and orderStatus='已到诊'
+    </select>
+    <!--public List<Map> findHotSetmeal();-->
+    <select id="findHotSetmeal" resultType="map">
+        SELECT s.`name` AS `name`,COUNT(o.`id`) AS setmeal_count, COUNT(o.`id`)/(SELECT COUNT(*) FROM t_order) AS proportion
+        FROM t_setmeal AS s INNER JOIN t_order AS o ON s.`id`=o.`setmeal_id`
+        GROUP BY s.`name`
+        ORDER BY setmeal_count DESC
+        LIMIT 0,2
+    </select>
+</mapper>

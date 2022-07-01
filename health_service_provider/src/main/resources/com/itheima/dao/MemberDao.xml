@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.dao.MemberDao">
+    <!--public Member getMemberByTelephone(@Param("phoneNumber") String telephone);-->
+    <select id="getMemberByTelephone" resultType="com.itheima.pojo.Member">
+        select * from t_member where phoneNumber=#{phoneNumber}
+    </select>
+    <!--public void add(Member member);-->
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into t_member values(null,#{fileNumber},#{name},#{sex},#{idCard},#{phoneNumber},#{regTime},#{password},#{email},#{birthday},#{remark})
+    </insert>
+    <!-- public Integer getMemberCountBeforeDate(@Param("date") String date);-->
+    <select id="getMemberCountBeforeDate" resultType="Integer">
+        select count(*) from t_member where regTime &lt;= #{date}
+    </select>
+    <!--public Integer getMemberCountByDate(@Param("date") String date);-->
+    <select id="getMemberCountByDate" resultType="Integer">
+        select count(*) from t_member where regTime=#{date}
+    </select>
+    <!--public Integer getTotalMemberCount();-->
+    <select id="getTotalMemberCount" resultType="Integer">
+        select count(*) from t_member
+    </select>
+    <!-- public Integer getMemberCountAfterDate(@Param("date") String date);-->
+    <select id="getMemberCountAfterDate" resultType="Integer">
+        select count(*) from t_member where regTime &gt;=#{date}
+    </select>
+</mapper>
