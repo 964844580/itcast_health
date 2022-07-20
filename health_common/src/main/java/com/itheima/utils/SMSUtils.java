@@ -14,8 +14,8 @@ public class SMSUtils {
 	public static final String VALIDATE_CODE = "SMS_154950909";//发送短信验证码(阿里云测试通知)
 	public static final String SHORT_MESSAGE_TEST = "阿里云短信测试";//发送短信验证码(阿里云测试通知)
 	public static final String DOMAIN_NAME_VISITED = "dysmsapi.aliyuncs.com";//访问的域名
-	private static final String ACCESS_KEY_Id = "LTAI5tFUDFXi5r6GtCGtk6Pb";//accessKeyId
-	private static final String ACCESS_KEY_SECRET = "jzxKmOZd1mDyHL2vrEVvADzByDNCKN";//accessKeySecret
+	private static final String ACCESS_KEY_Id = "";//accessKeyId
+	private static final String ACCESS_KEY_SECRET = "";//accessKeySecret
 	public static final String ORDER_NOTICE = "SMS_159771588";//体检预约成功通知
 
 	public static void sendShortMessage(String  phoneNumbers,String param) throws Exception {
